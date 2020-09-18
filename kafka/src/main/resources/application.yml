@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 32800KB
+      max-request-size: 32800KB
+

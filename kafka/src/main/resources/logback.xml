@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+  <property name="defaultPattern" value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} --- %msg%n%ex"/>
+
+  <springProfile name="dev">
+    <property name="defaultPath" value="/data/position-app/logs"></property>
+  </springProfile>
+
+  <springProfile name="prod">
+    <property name="defaultPath" value="/data/position-app/logs"></property>
+  </springProfile>
+
+  <!-- console -->
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="CONSOLE">
+    <encoder>
+      <pattern>${defaultPattern}</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+  </appender>
+
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE">
+    <file>${defaultPath}/app.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <maxHistory>30</maxHistory>
+      <fileNamePattern>${defaultPath}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>${defaultPattern}</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+  </appender>
+
+  <logger level="INFO" name="org.springframework"/>
+  <logger level="INFO" name="com.mchange"/>
+  <logger level="INFO" name="org.apache.commons.beanutils"/>
+  <logger level="INFO" name="org.apache.http.headers"/>
+  <logger level="INFO" name="org.apache.http.wire"/>
+  <logger level="INFO" name="org.apache.http.impl"/>
+  <logger level="INFO" name="org.apache.http.client"/>
+  <logger level="INFO" name="ytx.org.apache.http"/>
+
+  <root level="${logback.level:-INFO}">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+  </root>
+</configuration>

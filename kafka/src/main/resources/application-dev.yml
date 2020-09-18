@@ -1,0 +1,76 @@
+server:
+  port: 9091
+  tomcat:
+    max-threads: 1000
+    min-spare-threads: 50
+    basedir: ./
+    accesslog:
+      enabled: true
+      directory: ./logs/
+      prefix: access
+      suffix: .log
+      pattern: "%{yyyy-MM-dd'T'HH:mm:ss.SSS}t %a %s %Dms %r"
+      buffered: false
+      rename-on-rotate: true
+      file-date-format: .yyyyMMdd
+  compression:
+    enabled: true
+    mime-types: text/html, text/xml, text/plain, text/css, text/javascript, application/javascript,application/json
+
+spring:
+  redis:
+    url: redis://120.26.233.25:6678
+  rabbitmq:
+    host: 120.26.233.25
+    virtual-host: /pay
+    username: admin
+    password: 123456
+    connection-timeout: 2000
+    cache:
+      channel:
+        checkout-timeout: 1000
+  data:
+    mongodb:
+      uri: mongodb://try:try@120.26.233.25:27017/try?connecttimeoutms=5000&maxpoolsize=2
+
+  kafka:
+
+    producer:
+      # 集群
+      bootstrap-servers: 127.0.0.1:9091,120.26.233.25:9092
+      properties:
+        #最大size
+        max.request.size: 104857600    # 100MB
+        #间隔
+        linger.ms: 0 # 50
+        # 超时
+        request.timeout.ms: 1000 # default 30000/30s
+      # ack default = 1 /   0  / -1
+      acks: all
+      retries: 10
+    consumer:
+
+      # earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+      # latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+      # none:topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+      auto-offset-reset: earliest
+
+      # 如果为true，消费者的偏移量将在后台定期提交
+      #指定消息被消费之后自动提交偏移量，以便下次继续消费
+      enable-auto-commit: false
+      #如何设置为自动提交（enable.auto.commit=true），这里设置自动提交周期
+
+      auto-commit-interval: 1000
+      #在使用Kafka的组管理时，用于检测消费者故障的超时
+
+
+      properties:
+        session.timeout.ms: 60000
+        linger.ms: 50
+        security:
+        protocol: PLAINTEXT
+      # 消费组
+      group-id: test-group-id
+      bootstrap-servers: 127.0.0.1:9091,120.26.233.25:9092
+
+
