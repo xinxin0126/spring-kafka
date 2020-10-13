@@ -16,7 +16,7 @@ import java.util.Optional;
  * @Author pengzhansong
  * @Date 2020/9/17
  **/
-@Component
+//@Component
 @Slf4j
 public class MyListener {
     private static final String TPOIC = "topic.quick.demo";

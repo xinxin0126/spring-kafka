@@ -28,6 +28,10 @@ public class KafkaInitialConfiguration {
         return new NewTopic("topic.quick.initial",8, (short) 1 );
     }
 
+    @Bean
+    public NewTopic initialTopic2() {
+        return new NewTopic("topic.quick.demo",3, (short) 1 );
+    }
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
